@@ -8,6 +8,7 @@ import {
   ValidatorFn,
   AbstractControl,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FirstkeyPipe } from '../../shared/pipes/firstkey.pipe';
 
@@ -26,7 +27,11 @@ export class RegisterationComponent implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private formBuilder: FormBuilder, 
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group(
@@ -77,6 +82,14 @@ export class RegisterationComponent implements OnInit {
     return null;
   }
 
+  goToHome() {
+    this.router.navigate(['/']);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
   onSubmit() {
     console.log("On submit is")
     if (this.form.valid) {
@@ -93,8 +106,12 @@ export class RegisterationComponent implements OnInit {
       this.authService.register(payload).subscribe({
         next: (res) => {
           this.loading = false;
-          this.successMessage = 'Registration successful!';
+          this.successMessage = 'Registration successful! Redirecting to login...';
           this.form.reset();
+          // Navigate to login page after successful registration
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
         },
         error: (err) => {
           this.loading = false;

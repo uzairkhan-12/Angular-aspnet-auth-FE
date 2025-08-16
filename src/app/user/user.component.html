@@ -7,7 +7,35 @@
       >
         <div class="d-flex justify-content-start align-items-center">
           <div class="p-5 w-100">
-            <app-registeration></app-registeration>
+            <!-- Toggle buttons -->
+            <div class="mb-4 text-center">
+              <div class="btn-group w-100" role="group">
+                <button 
+                  type="button" 
+                  class="btn rounded-start-3"
+                  [class]="!showLogin ? 'btn-success' : 'btn-outline-success'"
+                  (click)="switchToRegister()">
+                  Sign Up
+                </button>
+                <button 
+                  type="button" 
+                  class="btn rounded-end-3"
+                  [class]="showLogin ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="switchToLogin()">
+                  Login
+                </button>
+              </div>
+            </div>
+
+            <!-- Components -->
+            <app-login 
+              *ngIf="showLogin" 
+              (switchToRegister)="switchToRegister()">
+            </app-login>
+            <app-registeration 
+              *ngIf="!showLogin"
+              (switchToLogin)="switchToLogin()">
+            </app-registeration>
           </div>
         </div>
       </div>
